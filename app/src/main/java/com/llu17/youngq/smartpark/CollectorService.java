@@ -111,7 +111,7 @@ public class CollectorService extends Service implements SensorEventListener {
             batteryLevel=intent.getIntExtra(BatteryManager.EXTRA_LEVEL,-1);
             batteryScale=intent.getIntExtra(BatteryManager.EXTRA_SCALE,-1);
             batteryPercentage[0] = batteryLevel*100/batteryScale;
-            //显示电量
+            //show battry level
             Log.e("battery scale: ", ""+batteryScale);
             Log.e("battery level: ", ""+batteryLevel);
             Log.e("battery percentage: ", ""+batteryPercentage[0]+"%");

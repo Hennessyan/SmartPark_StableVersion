@@ -76,7 +76,7 @@ public class UploadService extends Service implements VariableManager.Listener{
         super.onDestroy();
         releaseWakeLock();
         unregisterReceiver(mConnReceiver);
-        mListener.unregisterListener(this);
+        mListener.unregisterListener();
         flag = true;
         timer.cancel();
         Log.e("service","destroy");
@@ -148,8 +148,8 @@ public class UploadService extends Service implements VariableManager.Listener{
                     }
                     finally {
                         db1.close();
+                        latch.countDown();
                     }
-                    latch.countDown();
                 }
             };
             t1.start();
@@ -181,8 +181,8 @@ public class UploadService extends Service implements VariableManager.Listener{
                     }
                     finally {
                         db1.close();
+                        latch.countDown();
                     }
-                    latch.countDown();
                 }
             };
             t1.start();
@@ -214,8 +214,8 @@ public class UploadService extends Service implements VariableManager.Listener{
                     }
                     finally {
                         db1.close();
+                        latch.countDown();
                     }
-                    latch.countDown();
                 }
             };
             t1.start();
@@ -247,8 +247,8 @@ public class UploadService extends Service implements VariableManager.Listener{
                     }
                     finally {
                         db1.close();
+                        latch.countDown();
                     }
-                    latch.countDown();
                 }
             };
             t1.start();
@@ -280,8 +280,8 @@ public class UploadService extends Service implements VariableManager.Listener{
                     }
                     finally {
                         db1.close();
+                        latch.countDown();
                     }
-                    latch.countDown();
                 }
             };
             t1.start();
@@ -313,8 +313,8 @@ public class UploadService extends Service implements VariableManager.Listener{
                     }
                     finally {
                         db1.close();
+                        latch.countDown();
                     }
-                    latch.countDown();
                 }
             };
             t1.start();
@@ -346,8 +346,8 @@ public class UploadService extends Service implements VariableManager.Listener{
                     }
                     finally {
                         db1.close();
+                        latch.countDown();
                     }
-                    latch.countDown();
                 }
             };
             t1.start();
@@ -379,8 +379,8 @@ public class UploadService extends Service implements VariableManager.Listener{
                     }
                     finally {
                         db1.close();
+                        latch.countDown();
                     }
-                    latch.countDown();
                 }
             };
             t1.start();
@@ -413,8 +413,8 @@ public class UploadService extends Service implements VariableManager.Listener{
                     }
                     finally {
                         db1.close();
+                        latch.countDown();
                     }
-                    latch.countDown();
                 }
             };
             t1.start();

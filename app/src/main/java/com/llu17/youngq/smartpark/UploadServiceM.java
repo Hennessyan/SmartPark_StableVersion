@@ -56,15 +56,15 @@ public class UploadServiceM extends Service{
     private SQLiteDatabase db,db1;
 
 
-    private String gps_url = "http://cs.binghamton.edu/~smartpark/user/gps.php";
-    private String acce_url = "http://cs.binghamton.edu/~smartpark/user/accelerometer.php";
-    private String gyro_url = "http://cs.binghamton.edu/~smartpark/user/gyroscope.php";
-    private String step_url = "http://cs.binghamton.edu/~smartpark/user/step.php";
-    private String motion_url = "http://cs.binghamton.edu/~smartpark/user/motionstate.php";
-    private String wifi_url = "http://cs.binghamton.edu/~smartpark/user/wifi.php";
-    private String battery_url = "http://cs.binghamton.edu/~smartpark/user/battery.php";
-    private String magne_url = "http://cs.binghamton.edu/~smartpark/user/magnetometer.php";
-    private String park_url = "http://cs.binghamton.edu/~smartpark/user/parkingstate.php";
+    private String gps_url = "http://cs.binghamton.edu/~smartpark/lulu_test/gps.php";
+    private String acce_url = "http://cs.binghamton.edu/~smartpark/lulu_test/accelerometer.php";
+    private String gyro_url = "http://cs.binghamton.edu/~smartpark/lulu_test/gyroscope.php";
+    private String step_url = "http://cs.binghamton.edu/~smartpark/lulu_test/step.php";
+    private String motion_url = "http://cs.binghamton.edu/~smartpark/lulu_test/motionstate.php";
+    private String wifi_url = "http://cs.binghamton.edu/~smartpark/lulu_test/wifi.php";
+    private String battery_url = "http://cs.binghamton.edu/~smartpark/lulu_test/battery.php";
+    private String magne_url = "http://cs.binghamton.edu/~smartpark/lulu_test/magnetometer.php";
+    private String park_url = "http://cs.binghamton.edu/~smartpark/lulu_test/parkingstate.php";
 
     private ArrayList<GPS> gpses;
     private ArrayList<ACCELEROMETER> acces;

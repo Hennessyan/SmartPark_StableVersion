@@ -49,7 +49,7 @@ public class MainActivity extends AppCompatActivity implements SharedPreferences
 
 
     private String sampling_rate;
-    private boolean sleepMode, manualInput;
+    private boolean manualInput;
     static TextView upload_state;
     private Button MarkBusStop;
     private Switch DataCollectionSwitch, AutoCheckUploadSwitch;

@@ -58,31 +58,33 @@ public class VariableManager {
 
     private static CountDownLatch latch = null;
 
+    private final String gps_url = "http://cs.binghamton.edu/~smartpark/lulu_test/gps.php";
+    private final String acce_url = "http://cs.binghamton.edu/~smartpark/lulu_test/accelerometer.php";
+    private final String gyro_url = "http://cs.binghamton.edu/~smartpark/lulu_test/gyroscope.php";
+    private final String step_url = "http://cs.binghamton.edu/~smartpark/lulu_test/step.php";
+    private final String motion_url = "http://cs.binghamton.edu/~smartpark/lulu_test/motionstate.php";
+    private final String wifi_url = "http://cs.binghamton.edu/~smartpark/lulu_test/wifi.php";
+    private final String battery_url = "http://cs.binghamton.edu/~smartpark/lulu_test/battery.php";
+    private final String magne_url = "http://cs.binghamton.edu/~smartpark/lulu_test/magnetometer.php";
+    private final String park_url = "http://cs.binghamton.edu/~smartpark/lulu_test/parkingstate.php";
 
     public interface Listener {
-        public void onStateChange(boolean[] state);
+        void onStateChange(boolean[] state);
     }
 
     private Listener mListener = null;
     public void registerListener (Listener listener) {
         mListener = listener;
     }
-    public void unregisterListener (Listener listener) {
+    public void unregisterListener () {
         mListener = null;
     }
     private boolean[] myBoolean = new boolean[9];
+    private final int[] result = new int[9];
     public void doYourWork() {
         Log.e("There is WiFi","I am here!");
-        final String gps_url = "http://cs.binghamton.edu/~smartpark/user/gps.php";
-        final String acce_url = "http://cs.binghamton.edu/~smartpark/user/accelerometer.php";
-        final String gyro_url = "http://cs.binghamton.edu/~smartpark/user/gyroscope.php";
-        final String step_url = "http://cs.binghamton.edu/~smartpark/user/step.php";
-        final String motion_url = "http://cs.binghamton.edu/~smartpark/user/motionstate.php";
-        final String wifi_url = "http://cs.binghamton.edu/~smartpark/user/wifi.php";
-        final String battery_url = "http://cs.binghamton.edu/~smartpark/user/battery.php";
-        final String magne_url = "http://cs.binghamton.edu/~smartpark/user/magnetometer.php";
-        final String park_url = "http://cs.binghamton.edu/~smartpark/user/parkingstate.php";
-        final int[] result = new int[9];
+
+
 
         boolean label = true;
 
@@ -106,72 +108,81 @@ public class VariableManager {
                 latch = new CountDownLatch(9);
                 Thread t1 = new Thread() {
                     public void run() {
-                        if(gpses != null)
+                        if(gpses != null) {
                             result[0] = post_data(gps_url, changeGpsDateToJson());
+                        }
                         latch.countDown();
                     }
                 };
                 t1.start();
                 Thread t2 = new Thread() {
                     public void run() {
-                        if(acces != null)
+                        if(acces != null) {
                             result[1] = post_data(acce_url, changeAcceDateToJson());
+                        }
                         latch.countDown();
                     }
                 };
                 t2.start();
                 Thread t3 = new Thread() {
                     public void run() {
-                        if(gyros != null)
+                        if(gyros != null) {
                             result[2] = post_data(gyro_url, changeGyroDateToJson());
+                        }
                         latch.countDown();
                     }
                 };
                 t3.start();
                 Thread t4 = new Thread() {
                     public void run() {
-                        if(steps != null)
+                        if(steps != null) {
                             result[3] = post_data(step_url, changeStepDateToJson());
+                        }
                         latch.countDown();
                     }
                 };
                 t4.start();
                 Thread t5 = new Thread() {
                     public void run() {
-                        if(motions != null)
+                        if(motions != null) {
                             result[4] = post_data(motion_url, changeMotionDateToJson());
+                        }
                         latch.countDown();
                     }
                 };
                 t5.start();
                 Thread t6 = new Thread() {
                     public void run() {
-                        if(wifis != null)
+                        if(wifis != null) {
                             result[5] = post_data(wifi_url, changeWiFiDateToJson());
+                        }
                         latch.countDown();
                     }
                 };
                 t6.start();
                 Thread t7 = new Thread() {
                     public void run() {
-                        if(batteries != null)
+                        if(batteries != null) {
                             result[6] = post_data(battery_url, changeBatteryDateToJson());
+                        }
                         latch.countDown();
                     }
                 };
                 t7.start();
                 Thread t8 = new Thread() {
                     public void run() {
-                        if(magnetometers != null)
+                        if(magnetometers != null) {
                             result[7] = post_data(magne_url, changeMagneDateToJson());
+                        }
                         latch.countDown();
                     }
                 };
                 t8.start();
                 Thread t9 = new Thread() {
                     public void run() {
-                        if(parkinglots != null)
+                        if(parkinglots != null) {
                             result[8] = post_data(park_url, changeParkingDateToJson());
+                        }
                         latch.countDown();
                     }
                 };
@@ -183,34 +194,28 @@ public class VariableManager {
                     e.printStackTrace();
                 }
 
-//                Log.e("result[0]","!!!!!"+result[0]);
-//                Log.e("result[1]","!!!!!"+result[1]);
-//                Log.e("result[2]","!!!!!"+result[2]);
-//                Log.e("result[3]","!!!!!"+result[3]);
-//                Log.e("result[4]","!!!!!"+result[4]);
-//                Log.e("result[5]","!!!!!"+result[5]);
-//                Log.e("result[6]","!!!!!"+result[6]);
-//                Log.e("result[7]","!!!!!"+result[7]);
                 for(int i = 0; i < 9; i++) {
                     if (result[i] == 200)
                         myBoolean[i] = true;
                     else
                         myBoolean[i] = false;
                 }
+
+                if (mListener != null)
+                    mListener.onStateChange(myBoolean);
             }
             else{
                 Log.e("no wifi, ", "no upload!!!!!!!!!!!!!!!!!!");
             }
 
-            if (mListener != null)
-                mListener.onStateChange(myBoolean);
+
             //数据少的时候用它来保证不会一下就把所有的数据upload到mysql
             //从而可以通过开关wifi来检查是否代码可以正常运行
-            try {
-                Thread.sleep(2000);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
+//            try {
+//                Thread.sleep(2000);
+//            } catch (InterruptedException e) {
+//                e.printStackTrace();
+//            }
 
             if(flag == true)
                 label = false;
@@ -732,6 +737,7 @@ public class VariableManager {
 //            e.printStackTrace();
                 Log.e("no wifi exception: ", e.toString());
             }
+            Log.e("StatusCode: ", "" + StatusCode);
             return StatusCode;
         }
         else

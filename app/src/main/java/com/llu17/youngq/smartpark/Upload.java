@@ -10,6 +10,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.TimerTask;
+import java.util.concurrent.Semaphore;
 
 import static com.llu17.youngq.smartpark.CollectorService.id;
 import static com.llu17.youngq.smartpark.CollectorService.mDb;
@@ -33,6 +34,8 @@ public class Upload extends TimerTask {
     private int step = 0;
     private int tag = 0;
     private int mark = 0;       //mark bus stop
+    //avoid crash caused by
+    private Semaphore semaphoreTransaction = new Semaphore(1);
 
     public Upload(double[] array1, double[] array2, double[] array3, double[] array4, int[] array5, double[] array6, double[] array7, boolean[] array8){
         nums1 = array1;
@@ -117,8 +120,10 @@ public class Upload extends TimerTask {
             cv_mage.put(GpsContract.MagnetometerEntry.COLUMN_X, nums6[0]);
             cv_mage.put(GpsContract.MagnetometerEntry.COLUMN_Y, nums6[1]);
             cv_mage.put(GpsContract.MagnetometerEntry.COLUMN_Z, nums6[2]);
+
+            mDb.beginTransaction();
             try {
-                mDb.beginTransaction();
+                semaphoreTransaction.acquire();
                 mDb.insert(GpsContract.AccelerometerEntry.TABLE_NAME, null, cv_acce);
                 mDb.insert(GpsContract.GyroscopeEntry.TABLE_NAME, null, cv_gyro);
                 mDb.insert(GpsContract.StepEntry.TABLE_NAME, null, cv_step);
@@ -129,8 +134,13 @@ public class Upload extends TimerTask {
                 Log.e("===insert===", "success!" + count);
             } catch (SQLException e) {
                 //too bad :(
+            } catch (InterruptedException e) {
+                //  semaphoreTransaction's exception
+                Log.e("semaphoreTransaction", "error");
+                e.printStackTrace();
             } finally {
                 mDb.endTransaction();
+                semaphoreTransaction.release();
             }
         }
     }

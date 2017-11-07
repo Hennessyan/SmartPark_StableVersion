@@ -7,6 +7,7 @@ import android.util.Log;
 import com.llu17.youngq.smartpark.data.GpsContract;
 
 import java.util.TimerTask;
+import java.util.concurrent.Semaphore;
 
 import static com.llu17.youngq.smartpark.CollectorService.id;
 import static com.llu17.youngq.smartpark.CollectorService.mDb;
@@ -19,6 +20,7 @@ public class Upload1 extends TimerTask {
     int count = 0;
     int[] nums1, nums2; //1: battery percentage     2: wifi state
     int tag = 0;
+    private Semaphore semaphoreTransaction = new Semaphore(1);
 
     public Upload1(int[] a, int[] b){
         nums1 = a;
@@ -42,9 +44,11 @@ public class Upload1 extends TimerTask {
         cv_wifi.put(GpsContract.WiFiEntry.COLUMN_TAG, tag);
         cv_wifi.put(GpsContract.WiFiEntry.COLUMN_TIMESTAMP,temp_time);
         cv_wifi.put(GpsContract.WiFiEntry.COLUMN_State, nums2[0]);
+
+        mDb.beginTransaction();
         try
         {
-            mDb.beginTransaction();
+            semaphoreTransaction.acquire();
             mDb.insert(GpsContract.BatteryEntry.TABLE_NAME, null, cv_battery);
             mDb.insert(GpsContract.WiFiEntry.TABLE_NAME, null, cv_wifi);
             mDb.setTransactionSuccessful();
@@ -52,10 +56,13 @@ public class Upload1 extends TimerTask {
         }
         catch (SQLException e) {
             //too bad :(
-        }
-        finally
+        } catch (InterruptedException e) {
+            Log.e("semaphoreTransaction1","error");
+            e.printStackTrace();
+        } finally
         {
             mDb.endTransaction();
+            semaphoreTransaction.release();
         }
     }
 

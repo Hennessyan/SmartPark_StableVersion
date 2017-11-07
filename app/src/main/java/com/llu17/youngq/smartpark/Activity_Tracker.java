@@ -36,8 +36,13 @@ public class Activity_Tracker extends Service implements  GoogleApiClient.Connec
     @Override
     public void onCreate() {
         Log.d("---creating---","just created---------------------");
-
         super.onCreate();
+        mApiClient = new GoogleApiClient.Builder(this)
+                .addApi(ActivityRecognition.API)
+                .addConnectionCallbacks(this)
+                .addOnConnectionFailedListener(this)
+                .build();
+//        mApiClient.connect();
 
     }
 
@@ -45,11 +50,11 @@ public class Activity_Tracker extends Service implements  GoogleApiClient.Connec
     public int onStartCommand(Intent intent, int flags, int startId) {
         Log.d("---activity---","coneected®");
         acquireWakeLock();
-        mApiClient = new GoogleApiClient.Builder(this)
-                .addApi(ActivityRecognition.API)
-                .addConnectionCallbacks(this)
-                .addOnConnectionFailedListener(this)
-                .build();
+//        mApiClient = new GoogleApiClient.Builder(this)
+//                .addApi(ActivityRecognition.API)
+//                .addConnectionCallbacks(this)
+//                .addOnConnectionFailedListener(this)
+//                .build();
         mApiClient.connect();
         return super.onStartCommand(intent, flags, startId);
 
@@ -73,6 +78,7 @@ public class Activity_Tracker extends Service implements  GoogleApiClient.Connec
         ActivityRecognition.ActivityRecognitionApi.requestActivityUpdates( mApiClient, 1000, pendingIntent );
 
     }
+
 
     @Override
     public void onConnectionSuspended(int i) {
