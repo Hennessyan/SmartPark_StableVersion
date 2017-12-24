@@ -15,19 +15,25 @@ import android.hardware.SensorManager;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
+import android.media.MediaScannerConnection;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.BatteryManager;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Environment;
 import android.os.IBinder;
 import android.os.PowerManager;
 import android.support.annotation.Nullable;
 import android.support.v7.preference.PreferenceManager;
 import android.util.Log;
+import android.widget.Toast;
 
 import com.llu17.youngq.smartpark.data.GpsDbHelper;
 
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileWriter;
 import java.lang.reflect.Method;
 import java.util.Timer;
 
@@ -40,6 +46,7 @@ public class CollectorService extends Service implements SensorEventListener {
 
     public static SQLiteDatabase mDb;
     private PowerManager.WakeLock wakeLock = null;
+    private int fileNumCount = 0;
 
     private static int sampling_rate;
 //    public static final String ACTION = "com.llu17.youngq.sqlite_gps.CollectorService";
@@ -55,13 +62,32 @@ public class CollectorService extends Service implements SensorEventListener {
         @Override
         public void onLocationChanged(Location location) {
             Log.e("===location===","changed!");
-
+            fileNumCount++;
+            if (fileNumCount == 100) {
+                fileNumCount = 0;
+            }
 
             bearAndSpeed[0] = location.getBearing();
             bearAndSpeed[1] = location.getSpeed();
 
             gps_location[0] = location.getLatitude();
             gps_location[1] = location.getLongitude();
+
+            File writeFile = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS), "/data.txt");
+            MediaScannerConnection.scanFile(getApplicationContext(), new String[]{writeFile.getAbsolutePath()}, null, null);
+            try {
+                BufferedWriter bw = new BufferedWriter(new FileWriter(writeFile, false));
+                bw.write(Integer.toString(fileNumCount)+" ");
+                bw.write(Double.toString(gps_location[1]) + " ");
+                bw.write(Double.toString(gps_location[0]) + " ");
+                bw.write(Double.toString(bearAndSpeed[1]) + " ");
+                bw.write(Double.toString(bearAndSpeed[0]) + "\n");
+                bw.flush();
+                bw.close();
+//                Toast.makeText(getApplicationContext(), "write finished", Toast.LENGTH_SHORT).show();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
 
 //            BigDecimal bg = new BigDecimal(location.getLatitude());
 //            BigDecimal bg1 = new BigDecimal(location.getLongitude());

@@ -13,9 +13,11 @@ import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Environment;
 import android.os.Handler;
 import android.os.PowerManager;
 import android.provider.Settings;
+import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
@@ -38,6 +40,7 @@ import com.facebook.stetho.okhttp3.StethoInterceptor;
 import com.llu17.youngq.smartpark.data.GpsContract;
 import com.llu17.youngq.smartpark.data.GpsDbHelper;
 
+import java.io.File;
 import java.lang.reflect.Method;
 
 import okhttp3.OkHttpClient;
@@ -160,6 +163,10 @@ public class MainActivity extends AppCompatActivity implements SharedPreferences
         catch (Exception e) {
             e.printStackTrace();
         }
+
+        /*write file*/
+        ActivityCompat.requestPermissions(this, new String[]{android
+                .Manifest.permission.WRITE_EXTERNAL_STORAGE}, 1);
 
         DataCollectionSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
@@ -371,4 +378,20 @@ public class MainActivity extends AppCompatActivity implements SharedPreferences
         return serial;
 
     }
+//    @Override
+//    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+//        switch (requestCode) {
+//            case 1:
+//                if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+//                    //创建文件夹
+//                    if (Environment.getExternalStorageState().equals(Environment.MEDIA_MOUNTED)) {
+//                        File file = new File(Environment.getExternalStorageDirectory() + "/test/");
+//                        if (!file.exists()) {
+//                            Log.d("result", "create result:" + file.mkdirs());
+//                        }
+//                    }
+//                    break;
+//                }
+//        }
+//    }
 }

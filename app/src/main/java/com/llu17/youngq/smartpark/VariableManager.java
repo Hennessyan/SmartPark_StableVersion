@@ -58,15 +58,15 @@ public class VariableManager {
 
     private static CountDownLatch latch = null;
 
-    private final String gps_url = "http://cs.binghamton.edu/~smartpark/lulu_test/gps.php";
-    private final String acce_url = "http://cs.binghamton.edu/~smartpark/lulu_test/accelerometer.php";
-    private final String gyro_url = "http://cs.binghamton.edu/~smartpark/lulu_test/gyroscope.php";
-    private final String step_url = "http://cs.binghamton.edu/~smartpark/lulu_test/step.php";
-    private final String motion_url = "http://cs.binghamton.edu/~smartpark/lulu_test/motionstate.php";
-    private final String wifi_url = "http://cs.binghamton.edu/~smartpark/lulu_test/wifi.php";
-    private final String battery_url = "http://cs.binghamton.edu/~smartpark/lulu_test/battery.php";
-    private final String magne_url = "http://cs.binghamton.edu/~smartpark/lulu_test/magnetometer.php";
-    private final String park_url = "http://cs.binghamton.edu/~smartpark/lulu_test/parkingstate.php";
+    private final String gps_url = "http://cs.binghamton.edu/~smartpark/wen_yang/gps.php";
+    private final String acce_url = "http://cs.binghamton.edu/~smartpark/wen_yang/accelerometer.php";
+    private final String gyro_url = "http://cs.binghamton.edu/~smartpark/wen_yang/gyroscope.php";
+    private final String step_url = "http://cs.binghamton.edu/~smartpark/wen_yang/step.php";
+    private final String motion_url = "http://cs.binghamton.edu/~smartpark/wen_yang/motionstate.php";
+    private final String wifi_url = "http://cs.binghamton.edu/~smartpark/wen_yang/wifi.php";
+    private final String battery_url = "http://cs.binghamton.edu/~smartpark/wen_yang/battery.php";
+    private final String magne_url = "http://cs.binghamton.edu/~smartpark/wen_yang/magnetometer.php";
+    private final String park_url = "http://cs.binghamton.edu/~smartpark/wen_yang/parkingstate.php";
 
     public interface Listener {
         void onStateChange(boolean[] state);
